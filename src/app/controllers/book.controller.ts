@@ -79,7 +79,7 @@ const getBookById = async (req: Request, res: Response) => {
 };
 
 
-const updateBook = async (req: Request, res: Response): Promise<any> => {
+const updateBook = async (req: Request, res: Response) => {
     try {
         const { bookId } = req.params;
         const updatedBook = await Book.findByIdAndUpdate(bookId, req.body, {
@@ -87,7 +87,7 @@ const updateBook = async (req: Request, res: Response): Promise<any> => {
             runValidators: true,
         });
 
-        return res.status(200).json({
+        res.status(200).json({
             success: true,
             message: 'Book updated successfully',
             data: updatedBook,
@@ -101,12 +101,12 @@ const updateBook = async (req: Request, res: Response): Promise<any> => {
     }
 };
 
-const deleteBook = async (req: Request, res: Response): Promise<any> => {
+const deleteBook = async (req: Request, res: Response) => {
     try {
         const { bookId } = req.params;
-        const deletedBook = await Book.findByIdAndDelete(bookId);
+        await Book.findByIdAndDelete(bookId);
 
-        return res.status(200).json({
+        res.status(200).json({
             success: true,
             message: 'Book deleted successfully',
             data: null,

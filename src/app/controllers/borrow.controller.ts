@@ -34,7 +34,7 @@ const borrowBook = async (req: Request, res: Response): Promise<any> => {
             dueDate,
         });
 
-        return res.status(201).json({
+        res.status(201).json({
             success: true,
             message: 'Book borrowed successfully',
             data: borrowRecord,
