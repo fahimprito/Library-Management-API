@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { Book } from '../models/book.model';
+import mongoose from 'mongoose';
 
 const createBook = async (req: Request, res: Response) => {
     try {
@@ -78,4 +79,46 @@ const getBookById = async (req: Request, res: Response) => {
     }
 };
 
-export const bookController = { createBook, getAllBooks, getBookById };
+
+const updateBook = async (req: Request, res: Response): Promise<any> => {
+    try {
+        const { bookId } = req.params;
+        const updatedBook = await Book.findByIdAndUpdate(bookId, req.body, {
+            new: true,
+            runValidators: true,
+        });
+
+        return res.status(200).json({
+            success: true,
+            message: 'Book updated successfully',
+            data: updatedBook,
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: 'Something went wrong',
+            error,
+        });
+    }
+};
+
+const deleteBook = async (req: Request, res: Response): Promise<any> => {
+    try {
+        const { bookId } = req.params;
+        const deletedBook = await Book.findByIdAndDelete(bookId);
+
+        return res.status(200).json({
+            success: true,
+            message: 'Book deleted successfully',
+            data: null,
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: 'Something went wrong',
+            error,
+        });
+    }
+};
+
+export const bookController = { createBook, getAllBooks, getBookById, updateBook, deleteBook };
