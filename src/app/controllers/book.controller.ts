@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
 import { Book } from '../models/book.model';
-import mongoose from 'mongoose';
 
 const createBook = async (req: Request, res: Response) => {
     try {

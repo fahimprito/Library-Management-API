@@ -1,3 +1,5 @@
+import { Document } from "mongoose";
+
 export type Genre = 'FICTION' | 'NON_FICTION' | 'SCIENCE' | 'HISTORY' | 'BIOGRAPHY' | 'FANTASY';
 
 export interface IBook {
@@ -8,4 +10,8 @@ export interface IBook {
     description?: string;
     copies: number;
     available?: boolean;
+}
+
+export interface IBookDocument extends IBook, Document {
+    updateAvailability(): Promise<IBookDocument>;
 }

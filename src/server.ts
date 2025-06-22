@@ -8,7 +8,7 @@ const PORT = 5000;
 
 async function main() {
     try {
-        await mongoose.connect('mongodb+srv://mongodbTestingTS:PqSKFiewR6dlEO9C@cluster0.h6kac.mongodb.net/library-management-app?retryWrites=true&w=majority&appName=Cluster0');
+        await mongoose.connect(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.h6kac.mongodb.net/library-management-app?retryWrites=true&w=majority&appName=Cluster0`);
         console.log("Connected to MongoDB Using Mongoose!!");
         server = app.listen(PORT, () => {
             console.log(`App is listening on port ${PORT}`);
