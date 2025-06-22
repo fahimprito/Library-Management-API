@@ -1,10 +1,9 @@
-import { Request, Response, NextFunction } from 'express';
+import { Request, Response } from 'express';
 import { Book } from '../models/book.model';
 
-const createBook = async (req: Request, res: Response, next: NextFunction) => {
+const createBook = async (req: Request, res: Response) => {
     try {
         const bookData = req.body;
-        // const result = await BookService.createBook(bookData);
         const result = await Book.create(bookData);
 
         res.status(201).json({
@@ -21,7 +20,7 @@ const createBook = async (req: Request, res: Response, next: NextFunction) => {
     }
 };
 
-const getAllBooks = async (req: Request, res: Response, next: NextFunction) => {
+const getAllBooks = async (req: Request, res: Response) => {
     try {
 
         const {
@@ -59,4 +58,24 @@ const getAllBooks = async (req: Request, res: Response, next: NextFunction) => {
     }
 };
 
-export const bookController = { createBook, getAllBooks };
+
+const getBookById = async (req: Request, res: Response) => {
+    try {
+        const { bookId } = req.params;
+        const book = await Book.findById(bookId);
+
+        res.status(200).json({
+            success: true,
+            message: 'Book retrieved successfully',
+            data: book,
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: 'Something went wrong',
+            error,
+        });
+    }
+};
+
+export const bookController = { createBook, getAllBooks, getBookById };
