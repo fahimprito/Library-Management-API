@@ -85,7 +85,7 @@ GET /api/books/:bookId
 ```
 📝 Update Book
 ```bash
-PUT /api/books/:bookId
+PATCH /api/books/:bookId
 ```
 ❌ Delete Book
 ```bash

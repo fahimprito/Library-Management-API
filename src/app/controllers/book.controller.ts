@@ -11,7 +11,15 @@ const createBook = async (req: Request, res: Response) => {
             message: 'Book created successfully',
             data: result,
         });
-    } catch (error) {
+    } catch (error: any) {
+        if (error.code === 11000 && error.keyPattern?.isbn) {
+            // Duplicate ISBN
+            res.status(400).json({
+                success: false,
+                message: 'A book with this ISBN already exists.',
+            });
+        }
+
         res.status(500).json({
             success: false,
             message: 'Something went wrong',
@@ -43,7 +51,7 @@ const getAllBooks = async (req: Request, res: Response) => {
             sortOptions[sortBy as string] = sort === 'asc' ? 1 : -1;
         }
 
-        const books = await Book.find(query).sort(sortOptions).limit(parseInt(limit as string || "10"));
+        const books = await Book.find(query).sort(sortOptions).limit(parseInt(limit as string || ""));
         res.status(200).json({
             success: true,
             message: 'Books fetched successfully',
