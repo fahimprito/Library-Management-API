@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.bookController = void 0;
 const book_model_1 = require("../models/book.model");
 const createBook = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     try {
         const bookData = req.body;
         const result = yield book_model_1.Book.create(bookData);
@@ -22,6 +23,13 @@ const createBook = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         });
     }
     catch (error) {
+        if (error.code === 11000 && ((_a = error.keyPattern) === null || _a === void 0 ? void 0 : _a.isbn)) {
+            // Duplicate ISBN
+            res.status(400).json({
+                success: false,
+                message: 'A book with this ISBN already exists.',
+            });
+        }
         res.status(500).json({
             success: false,
             message: 'Something went wrong',
@@ -43,7 +51,7 @@ const getAllBooks = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         else {
             sortOptions[sortBy] = sort === 'asc' ? 1 : -1;
         }
-        const books = yield book_model_1.Book.find(query).sort(sortOptions).limit(parseInt(limit || "10"));
+        const books = yield book_model_1.Book.find(query).sort(sortOptions).limit(parseInt(limit || ""));
         res.status(200).json({
             success: true,
             message: 'Books fetched successfully',
